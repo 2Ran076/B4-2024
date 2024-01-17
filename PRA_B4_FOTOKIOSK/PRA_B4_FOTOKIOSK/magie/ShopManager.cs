@@ -14,7 +14,8 @@ namespace PRA_B4_FOTOKIOSK.magie
     public class ShopManager
     {
 
-        public static List<KioskProduct> Products = new List<KioskProduct>();    
+        public static List<KioskProduct> Products = new List<KioskProduct>();
+        public static List<OrderedProduct> OrderedProducts = new List<OrderedProduct>();
         public static Home Instance { get; set; }
 
         public static void SetShopPriceList(string text)
@@ -25,6 +26,27 @@ namespace PRA_B4_FOTOKIOSK.magie
         public static void AddShopPriceList(string text)
         {
             Instance.lbPrices.Content = Instance.lbPrices.Content + text;
+        }
+        public static void AddOrderedProduct(OrderedProduct orderedProduct)
+        {
+            OrderedProducts.Add(orderedProduct);
+            UpdateShopReceipt(); // Update the receipt content when a new product is added
+        }
+        private static void UpdateShopReceipt()
+        {
+            // Update the receipt content based on the ordered products
+            StringBuilder receiptText = new StringBuilder("Eindbedrasasd€\n");
+
+            foreach (var orderedProduct in OrderedProducts)
+            {
+                receiptText.AppendLine($"{orderedProduct.ProductName} (Foto-ID: {orderedProduct.FotoId}): {orderedProduct.Amount} x €{orderedProduct.TotalPrice}");
+            }
+
+            // Add total amount to the receipt
+            decimal totalAmount = OrderedProducts.Sum(product => product.TotalPrice);
+            receiptText.AppendLine($"Totaalbedrag: €{totalAmount}");
+
+            SetShopReceipt(receiptText.ToString());
         }
 
         public static void SetShopReceipt(string text)
@@ -51,18 +73,14 @@ namespace PRA_B4_FOTOKIOSK.magie
             }
         }
 
-        public KioskProduct GetSelectedProduct()
+        public static string GetSelectedProduct()
         {
             if (Instance.cbProducts.SelectedItem == null) return null;
-            string selected = Instance.cbProducts.SelectedItem.ToString();
-            foreach (KioskProduct product in Products)
-            {
-                if (product.Name == selected) return product;
-            }
-            return null;
+            return Instance.cbProducts.SelectedItem.ToString();
         }
 
-        public int? GetFotoId()
+
+        public static int? GetFotoId()
         {
             int? id = null;
             int amount = -1;
@@ -73,7 +91,7 @@ namespace PRA_B4_FOTOKIOSK.magie
             return id;
         }
 
-        public int? GetAmount()
+        public static int? GetAmount()
         {
             int? id = null;
             int amount = -1;
@@ -82,6 +100,10 @@ namespace PRA_B4_FOTOKIOSK.magie
                 id = amount;
             }
             return id;
+        }
+        public static List<OrderedProduct> GetOrderedProducts()
+        {
+            return OrderedProducts;
         }
     }
 }

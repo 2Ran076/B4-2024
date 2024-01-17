@@ -17,34 +17,38 @@ namespace PRA_B4_FOTOKIOSK.controller
 
         // De lijst met fotos die we laten zien
         public List<KioskPhoto> PicturesToDisplay = new List<KioskPhoto>();
-        
-        
+
+
         // Start methode die wordt aangeroepen wanneer de foto pagina opent.
         public void Start()
         {
+            var now = DateTime.Now;
+            int currentDay = (int)now.DayOfWeek;
 
-            // Initializeer de lijst met fotos
-            // WAARSCHUWING. ZONDER FILTER LAADT DIT ALLES!
-            // foreach is een for-loop die door een array loopt
             foreach (string dir in Directory.GetDirectories(@"../../../fotos"))
             {
-                /**
-                 * dir string is de map waar de fotos in staan. Bijvoorbeeld:
-                 * \fotos\0_Zondag
-                 */
-                foreach (string file in Directory.GetFiles(dir))
+                if (int.TryParse(Path.GetFileNameWithoutExtension(dir.Split('_').FirstOrDefault()), out int dayNumber))
                 {
-                    /**
-                     * file string is de file van de foto. Bijvoorbeeld:
-                     * \fotos\0_Zondag\10_05_30_id8824.jpg
-                     */
-                    PicturesToDisplay.Add(new KioskPhoto() { Id = 0, Source = file });
+                    if (dayNumber == currentDay)
+                    {
+                        foreach (string file in Directory.GetFiles(dir, "*.jpg"))
+                        {
+                            PicturesToDisplay.Add(new KioskPhoto() { Id = 8824, Source = file });
+                        }
+                    }
                 }
             }
 
-            // Update de fotos
+            foreach (var photo in PicturesToDisplay)
+            {
+                Console.WriteLine(photo.Source);
+            }
+
             PictureManager.UpdatePictures(PicturesToDisplay);
         }
+
+
+
 
         // Wordt uitgevoerd wanneer er op de Refresh knop is geklikt
         public void RefreshButtonClick()

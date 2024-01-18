@@ -46,7 +46,6 @@ namespace PRA_B4_FOTOKIOSK.controller
 
         private void UpdateShopPriceList()
         {
-            // Loop through the list of products and add them to the price list
             foreach (KioskProduct product in Products ?? Enumerable.Empty<KioskProduct>())
             {
                 ShopManager.AddShopPriceList($"{product.Name}: €{product.Price} - {product.Description}");
@@ -64,7 +63,6 @@ namespace PRA_B4_FOTOKIOSK.controller
                 KioskProduct selectedProduct = Products?.FirstOrDefault(p => p.Name == ShopManager.GetSelectedProduct());
                 if (selectedProduct != null)
                 {
-                    // Create an OrderedProduct
                     OrderedProduct orderedProduct = new OrderedProduct
                     {
                         FotoId = fotoId.Value,
@@ -72,8 +70,6 @@ namespace PRA_B4_FOTOKIOSK.controller
                         Amount = amount.Value,
                         TotalPrice = amount.Value * selectedProduct.Price
                     };
-
-                    // Add the OrderedProduct to the ShopManager
                     ShopManager.AddOrderedProduct(orderedProduct);
                 }
             }
@@ -93,27 +89,18 @@ namespace PRA_B4_FOTOKIOSK.controller
         // Wordt uitgevoerd wanneer er op de Save knop is geklikt
         public void SaveButtonClick()
         {
-            // Get the receipt text
             string receiptText = ShopManager.GetShopReceipt();
-
-            // Save the receipt to a text file
             SaveReceiptToFile(receiptText);
         }
 
         private void SaveReceiptToFile(string receiptText)
         {
-            // Set the directory where you want to save the receipt files
             string directoryPath = @"../../../Kassabonnen";
 
             try
             {
-                // Create the directory if it doesn't exist
                 Directory.CreateDirectory(directoryPath);
-
-                // Define the base filename
                 string baseFileName = "Kassabon";
-
-                // Find the next available index
                 int index = 1;
                 string fileName;
                 do
@@ -122,14 +109,11 @@ namespace PRA_B4_FOTOKIOSK.controller
                     index++;
                 } while (File.Exists(Path.Combine(directoryPath, fileName)));
 
-                // Combine the directory path and the file name
                 string filePath = Path.Combine(directoryPath, fileName);
 
-                // Write the receipt text to the file
                 File.WriteAllText(filePath, receiptText);
 
-                // Inform the user that the receipt has been saved successfully
-                MessageBox.Show($"Kasssabon opgeslagen in: {filePath}", "Save Receipt", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Kasssabon opgeslagen in: {filePath}", "Opgeslagen", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

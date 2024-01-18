@@ -3,8 +3,10 @@
     "",
     "\\PRA_B4_FOTOKIOSK",
     "\\PRA_B4_FOTOKIOSK\\PRA_B4_FOTOKIOSK",
-    "\\PRA_B4_FOTOKIOSK\\PRA_B4_FOTOKIOSK\\controller"
+    "\\PRA_B4_FOTOKIOSK\\PRA_B4_FOTOKIOSK\\controller",
+    "\\PRA_B4_FOTOKIOSK\\PRA_B4_FOTOKIOSK\\Kassabonnen",
+    "\\PRA_B4_FOTOKIOSK\\PRA_B4_FOTOKIOSK\\models"
   ],
-  "SelectedNode": "\\PRA_B4_FOTOKIOSK\\PRA_B4_FOTOKIOSK.sln",
+  "SelectedNode": "\\PRA_B4_FOTOKIOSK\\PRA_B4_FOTOKIOSK\\controller\\ShopController.cs",
   "PreviewInSolutionExplorer": false
 }
